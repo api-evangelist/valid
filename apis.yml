@@ -1,7 +1,25 @@
 aid: valid
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/valid.png
 name: Valid
-description: Valid is a company surfaced as a portfolio company of canaan-partners and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: Valid is an AI-native advertising agency that grows consumer companies
+  through an end-to-end performance marketing offering, combining AI-generated performance
+  creative (20+ ads per month, moving from concept to launch in about three days),
+  brand-specific AI-influencers with organic followings, and managed media buying
+  across Meta, TikTok, Google, Snap, and AppLovin. Valid is backed by Canaan Partners
+  and based in San Francisco, California. The company operates as a managed service
+  with a client platform at clients.valid.co and does not currently publish a public
+  API or developer program.
 url: https://raw.githubusercontent.com/api-evangelist/valid/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,12 +29,44 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
+- Advertising
+- Marketing
+- Artificial Intelligence
+- Creative
+- Media Buying
+- Influencers
 apis: []
+common:
+- type: DomainSecurity
+  url: security/valid-domain-security.yml
+- type: Website
+  url: https://valid.co
+- type: Login
+  url: https://clients.valid.co
+- type: CaseStudies
+  url: https://valid.co/case-studies
+- type: Careers
+  url: https://valid.co/careers
+- type: TermsOfService
+  url: https://valid.co/terms-of-service
+- type: PrivacyPolicy
+  url: https://valid.co/privacy-policy
+- type: Contact
+  url: mailto:hello@valid.co
+- type: WellKnown
+  url: well-known/valid-well-known.yml
+- type: LLMsTxt
+  url: llms/valid-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-21'
+  status: minimal
+  artifacts_added: 3
+  pass: local-v1

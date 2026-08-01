@@ -1,0 +1,19 @@
+# Valid
+
+> Valid (valid.co) is an AI-native advertising agency that grows consumer companies through an end-to-end performance marketing offering: AI-generated performance creative (20+ ads per month, concept to launch in about 3 days), brand-specific AI-influencers with organic followings, and multi-platform media buying across Meta, TikTok, Google, Snap, and AppLovin. Backed by Canaan Partners. Based in San Francisco, California. Valid does not currently publish a public API or developer program; clients work through a managed platform at clients.valid.co.
+
+## Company
+
+- [Website](https://valid.co): Valid — "We grow consumer companies."
+- [Case Studies](https://valid.co/case-studies): Customer results from Valid's creative + media buying engagements
+- [Careers](https://valid.co/careers): Open roles at Valid
+- [Client Login](https://clients.valid.co): Client platform sign-in
+- [Terms of Service](https://valid.co/terms-of-service)
+- [Privacy Policy](https://valid.co/privacy-policy)
+
+## Contact
+
+- Email: hello@valid.co
+- Investor: Canaan Partners (https://www.canaan.com/companies/valid)
+
+<!-- generated: 2026-07-21 | method: generated | source: apis.yml + https://valid.co (no /llms.txt published; probed 404 on 2026-07-21) -->
