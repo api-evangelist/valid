@@ -1,0 +1,81 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Error bodies observed on live unauthenticated requests to Valid's own hosts on
+  2026-08-12. No OpenAPI exists to derive from and Valid publishes no error
+  reference; every entry below is a response body captured verbatim.
+format: custom
+format_note: >-
+  NOT RFC 9457. No response used application/problem+json and no body carried a
+  type/title/status/detail envelope. Three different error shapes are served from
+  three Valid-controlled hosts, so a client that learns one does not understand the
+  others.
+envelopes:
+- name: gateway_gate
+  host: mcp.valid.co, v1.valid-gke-data-api.com
+  content_type: application/json
+  shape: '{"error": "<string>"}'
+  emitted_by: the outer API-key gate in front of the MCP/data service
+- name: application
+  host: mcp.valid.co/api/mcp/
+  content_type: application/json
+  shape: '{"detail": "<string>"}'
+  emitted_by: the FastAPI/uvicorn application itself
+- name: kong
+  host: api.valid.co
+  content_type: application/json
+  shape: '{"message": "<string>", "request_id": "<uuid-hex>"}'
+  emitted_by: Kong API gateway
+problems:
+- code: api-key-missing
+  status: 407
+  envelope: gateway_gate
+  body: '{"error":"API key missing"}'
+  observed_at: https://mcp.valid.co/openapi.json
+  title: API key missing
+  remediation: >-
+    Supply the gate credential. The header name is not published anywhere on Valid's
+    public surface, so this is only actionable for an existing client.
+  note: >-
+    407 Proxy Authentication Required is the wrong status for an origin-server
+    credential and the response carries no Proxy-Authenticate header, which RFC 9110
+    §15.5.8 requires. 401 with WWW-Authenticate would be correct.
+- code: not-authenticated
+  status: 401
+  envelope: application
+  body: '{"detail":"Not authenticated"}'
+  observed_at: https://mcp.valid.co/api/mcp/ (POST, JSON-RPC tools/list)
+  headers:
+    www-authenticate: Bearer
+  title: Not authenticated
+  remediation: >-
+    Obtain a bearer token from https://mcp.valid.co/oauth/token via the authorization
+    code flow described in well-known/valid-oauth-authorization-server.json, then
+    present it in the Authorization header.
+- code: method-not-allowed
+  status: 405
+  envelope: application
+  body: '{"detail":"Method Not Allowed"}'
+  observed_at: https://mcp.valid.co/oauth/register (GET), https://mcp.valid.co/mcp/ (GET)
+  title: Method Not Allowed
+  remediation: Use POST. Both the registration endpoint and the MCP endpoint are POST-only.
+- code: no-route-matched
+  status: 404
+  envelope: kong
+  body: '{"message":"no Route matched with those values","request_id":"..."}'
+  observed_at: https://api.valid.co/ and every path probed beneath it
+  title: No route matched
+  remediation: >-
+    None available publicly. api.valid.co is a Kong gateway with no publicly routed
+    paths; the request_id is the only correlation handle a caller gets.
+  note: >-
+    Kong's stock unrouted-request response. It leaks that a gateway is deployed and
+    returns a correlation id (also echoed as the x-kong-request-id header) but
+    exposes no route inventory.
+tracing:
+  request_id_header: x-kong-request-id
+  scope: api.valid.co only
+  note: >-
+    Neither mcp.valid.co nor v1.valid-gke-data-api.com returns any request-id or
+    correlation header on the responses observed, so errors from the MCP surface
+    carry nothing a client could quote in a support request.

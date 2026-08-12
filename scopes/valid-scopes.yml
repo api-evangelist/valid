@@ -1,0 +1,35 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  scopes_supported in https://mcp.valid.co/.well-known/oauth-authorization-server
+  and https://mcp.valid.co/.well-known/oauth-protected-resource (both HTTP 200,
+  fetched 2026-08-12).
+docs: null
+docs_note: >-
+  Valid publishes no scopes or permissions reference page. These three scopes are
+  taken verbatim from the server's own metadata; the descriptions below are the
+  standard OpenID Connect meanings of those scope names, not provider text.
+api: Valid Chat With Your Ads MCP Server
+authorization_server: https://mcp.valid.co
+scope_count: 3
+scopes:
+- name: openid
+  description: Request an OpenID Connect subject identifier for the authenticated user.
+  standard: OpenID Connect Core 1.0
+  provider_described: false
+- name: email
+  description: Access the authenticated user's email address.
+  standard: OpenID Connect Core 1.0
+  provider_described: false
+- name: profile
+  description: Access basic profile claims for the authenticated user.
+  standard: OpenID Connect Core 1.0
+  provider_described: false
+notes: >-
+  All three advertised scopes are identity scopes. Valid publishes NO resource
+  scopes — nothing like ads:read, spend:read, campaigns:write — even though the
+  server's stated purpose is querying an advertising account. Authorization to the
+  underlying ad data is therefore not expressed in the OAuth scope layer at all; it
+  is presumably bound to the client account behind the token. For an agent surface
+  this matters: a consenting user cannot grant an agent read-only access to spend
+  data, because no scope exists to describe that. Recording the gap is the finding.

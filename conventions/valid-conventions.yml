@@ -1,0 +1,65 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Derived from live unauthenticated probes of Valid's hosts on 2026-08-12 and from
+  the three metadata documents under well-known/. Valid publishes no API style guide,
+  so nothing here is quoted from the provider; each entry records what was observed
+  or, explicitly, that it could not be observed.
+api: Valid Chat With Your Ads MCP Server
+transport:
+  protocol: MCP over streamable HTTP (JSON-RPC 2.0)
+  endpoint: https://mcp.valid.co/api/mcp/
+  methods: POST (GET on the endpoint returns 405)
+  content_type: application/json
+  accept: application/json, text/event-stream
+auth_style:
+  primary: OAuth 2.1 authorization code + PKCE, bearer token in the Authorization header
+  secondary: an unpublished API-key gate in front of the host (HTTP 407 when absent)
+  detail: authentication/valid-authentication.yml
+idempotency:
+  supported: unknown
+  header: null
+  note: >-
+    Not observable. No public contract, no documented write operations, and no
+    unauthenticated path that accepts a mutation. NO Idempotency pointer is claimed —
+    absence of evidence is recorded as unknown, not as support.
+pagination:
+  style: unknown
+  note: Not observable — the tool surface is auth-gated and no contract is published.
+versioning:
+  scheme: host-prefix
+  evidence: >-
+    The origin host is v1.valid-gke-data-api.com — a `v1` label in the hostname is
+    the only version signal Valid exposes. The public alias mcp.valid.co carries no
+    version, and no path segment, header or media-type parameter conveys one.
+  note: >-
+    A version encoded only in an internal origin hostname is invisible to a client
+    calling the public alias, so consumers have no way to pin or detect a version
+    change.
+error_envelope:
+  shape: three inconsistent shapes across hosts
+  detail: errors/valid-problem-types.yml
+  rfc9457: false
+rate_limit_signalling:
+  headers: []
+  detail: rate-limits/valid-rate-limits.yml
+request_tracing:
+  header: x-kong-request-id
+  scope: api.valid.co only
+  note: >-
+    The MCP host returns no correlation identifier on any observed response.
+discovery:
+  well_known:
+  - /.well-known/oauth-authorization-server
+  - /.well-known/oauth-protected-resource
+  - /.well-known/openid-configuration
+  detail: well-known/valid-well-known.yml
+  note: >-
+    The MCP authorization discovery chain (RFC 9728 -> RFC 8414 -> RFC 7591) is fully
+    wired, which is the one place Valid's conventions are genuinely strong. Every
+    other convention layer — pagination, idempotency, versioning, errors, rate
+    limits — is either absent or unpublished.
+transport_security:
+  https_only: true
+  hsts: true
+  detail: security/valid-domain-security.yml

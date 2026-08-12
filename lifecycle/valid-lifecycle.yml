@@ -1,0 +1,66 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Probes of https://status.valid.co, https://changelog.valid.co, https://blog.valid.co,
+  https://help.valid.co, https://support.valid.co (all NXDOMAIN), the valid.co
+  sitemap.xml, and https://valid.co/terms-of-service, on 2026-08-12.
+api: Valid Chat With Your Ads MCP Server
+versioning:
+  scheme: host-prefix
+  current_version: v1
+  evidence: origin host v1.valid-gke-data-api.com
+  policy_published: false
+  note: >-
+    The `v1` label in the origin hostname is the only version signal on Valid's
+    surface. No versioning policy is published and the public alias mcp.valid.co
+    carries no version at all.
+deprecation:
+  policy_published: false
+  sunset_header: not observed
+  deprecation_header: not observed
+  rfc8594: false
+  note: >-
+    No deprecation policy, no RFC 8594 Sunset or Deprecation headers on any observed
+    response, and no deprecated operations to derive (there is no public contract).
+status_page:
+  published: false
+  probed:
+  - url: https://status.valid.co
+    result: NXDOMAIN
+  health_endpoint:
+    url: https://mcp.valid.co/health
+    status: 200
+    body: '{"status":"healthy"}'
+    note: >-
+      A machine liveness probe, not a status page. It reports one process healthy;
+      it carries no incident history, no component breakdown, no subscription and no
+      human-readable page, so it does not satisfy a StatusPage claim and none is
+      asserted.
+changelog:
+  published: false
+  probed:
+  - url: https://changelog.valid.co
+    result: NXDOMAIN
+  note: >-
+    No changelog, release notes or blog. valid.co/sitemap.xml lists 21 URLs — three
+    product pages, five case studies, nine job postings, about, work, ambassadors,
+    legal — and no dated content of any kind.
+sla:
+  published: false
+  note: >-
+    The terms of service set out billing, cancellation and acceptable use but no
+    service level, uptime target or credit regime. The closest published commitment
+    is the media-buying page's "sub-day response time" on a dedicated Slack channel,
+    which is a support-response promise to managed clients rather than an API SLA.
+support:
+  email: support@valid.co
+  source: https://valid.co/terms-of-service (cancellation instructions)
+  general_email: hello@valid.co
+  channel: dedicated Slack channel for managed-service clients
+maturity:
+  api_stage: customer-gated
+  note: >-
+    The MCP server is live and bundled into the managed engagement, but it has no
+    public documentation, no version policy, no changelog, no status page and no SLA.
+    It behaves as an internal client feature that happens to speak a public protocol,
+    not as a shipped API product.

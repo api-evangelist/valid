@@ -1,0 +1,22 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Response headers observed on live unauthenticated requests to
+  https://mcp.valid.co/health, https://mcp.valid.co/api/mcp/ and
+  https://api.valid.co/ on 2026-08-12, plus a search of valid.co for any published
+  limits.
+limit_count: 0
+limits: []
+headers: []
+status_on_exhaustion: null
+notes: >-
+  Valid documents no rate limits anywhere on its public surface — there is no
+  developer portal, no API reference and no mention of limits in the terms of
+  service. Nor are limits signalled at runtime: no RateLimit-*, X-RateLimit-*, or
+  Retry-After header appeared on any response from mcp.valid.co (repeated requests
+  to /health), from the MCP endpoint's 401, or from the Kong gateway at
+  api.valid.co. An agent calling this surface has no way to learn its budget in
+  advance and no runtime signal to back off on — it would have to infer throttling
+  from failures. Recording the honest zero: nothing published, nothing signalled.
+  This says nothing about whether limits are enforced behind the auth gate, only
+  that they are not observable.

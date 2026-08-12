@@ -1,0 +1,113 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Live unauthenticated probes of https://mcp.valid.co, https://api.valid.co,
+  https://www.valid.co and https://clients.valid.co on 2026-08-12, plus the three
+  metadata documents saved under well-known/.
+scope: >-
+  Cross-cutting standards Valid's public surface can be checked against. Only what
+  was directly observed is asserted; anything unverifiable behind the auth gate is
+  recorded as unknown rather than guessed.
+standards:
+- id: oauth2
+  name: OAuth 2.0 / 2.1 Authorization Framework
+  conforms: true
+  evidence: >-
+    Authorization code grant with refresh tokens, PKCE and a token endpoint, all
+    advertised at https://mcp.valid.co/.well-known/oauth-authorization-server (200).
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: >-
+    https://mcp.valid.co/.well-known/oauth-authorization-server returns 200 with a
+    valid metadata document carrying issuer, authorization_endpoint, token_endpoint,
+    registration_endpoint, scopes_supported, response_types_supported,
+    grant_types_supported, token_endpoint_auth_methods_supported and
+    code_challenge_methods_supported.
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence: >-
+    https://mcp.valid.co/.well-known/oauth-protected-resource returns 200 naming the
+    resource (https://mcp.valid.co/api/mcp/), its authorization_servers,
+    bearer_methods_supported, resource_name and scopes_supported. This is the
+    discovery document MCP clients need and most MCP servers still omit.
+- id: rfc7591
+  name: OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence: >-
+    registration_endpoint https://mcp.valid.co/oauth/register is advertised in the
+    authorization server metadata; a GET returns 405 Method Not Allowed, consistent
+    with a POST-only registration endpoint.
+- id: rfc7636
+  name: PKCE (Proof Key for Code Exchange)
+  conforms: partial
+  evidence: >-
+    code_challenge_methods_supported is ["S256","plain"]. S256 is present, but
+    continuing to offer `plain` permits a downgrade that OAuth 2.1 forbids.
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage
+  conforms: true
+  evidence: >-
+    An anonymous POST to https://mcp.valid.co/api/mcp/ returns HTTP 401 with
+    `www-authenticate: Bearer`, and the protected resource metadata declares
+    bearer_methods_supported ["header"].
+- id: oidc
+  name: OpenID Connect Discovery 1.0
+  conforms: false
+  evidence: >-
+    https://mcp.valid.co/.well-known/openid-configuration returns 200, but the body
+    is byte-identical to the RFC 8414 OAuth document and omits every OIDC-required
+    field (jwks_uri, userinfo_endpoint, subject_types_supported,
+    id_token_signing_alg_values_supported). The `openid` scope is advertised without
+    a conformant OpenID Provider configuration behind it.
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    Streamable HTTP MCP endpoint at https://mcp.valid.co/api/mcp/ that speaks
+    JSON-RPC and rejects anonymous calls with 401/WWW-Authenticate, with the full
+    MCP authorization discovery chain (RFC 9728 -> RFC 8414 -> RFC 7591) in place.
+    Protocol version and capability set could not be read: tools/list is gated.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Error bodies are bare JSON objects with no `type`/`title`/`status`/`detail`
+    envelope and content-type application/json, never application/problem+json.
+    Three distinct and mutually inconsistent shapes were observed across Valid's own
+    hosts — see errors/valid-problem-types.yml.
+- id: rfc9110-407
+  name: HTTP Semantics — 407 Proxy Authentication Required
+  conforms: false
+  evidence: >-
+    mcp.valid.co returns HTTP 407 for a missing API key without any
+    Proxy-Authenticate header, which RFC 9110 §15.5.8 makes mandatory. 401 with
+    WWW-Authenticate is the correct status for an origin-server credential.
+- id: hsts
+  name: HTTP Strict Transport Security
+  conforms: true
+  evidence: >-
+    valid.co (max-age 63072000), clients.valid.co (max-age 63072000) and
+    api.valid.co (max-age 31536000; includeSubDomains) all set HSTS.
+- id: rfc9309
+  name: Robots Exclusion Protocol
+  conforms: true
+  evidence: >-
+    https://www.valid.co/robots.txt (200) is a valid robots.txt that explicitly
+    allows AI model crawlers and declares a sitemap.
+- id: idempotency
+  name: Idempotency keys
+  conforms: unknown
+  evidence: >-
+    Not observable — no public contract and no unauthenticated write path.
+- id: pagination
+  name: Documented pagination
+  conforms: unknown
+  evidence: >-
+    Not observable — no public contract.
+compliance_certifications: []
+compliance_note: >-
+  Valid publishes no trust center, no SOC 2 / ISO 27001 / PCI / HIPAA claim and no
+  compliance page. The privacy policy and terms of service are the only governance
+  documents on the site. No Compliance pointer is asserted.

@@ -1,0 +1,15 @@
+{
+    "resource": "https://mcp.valid.co/api/mcp/",
+    "authorization_servers": [
+        "https://mcp.valid.co"
+    ],
+    "bearer_methods_supported": [
+        "header"
+    ],
+    "resource_name": "Chat With Your Ads MCP Server",
+    "scopes_supported": [
+        "openid",
+        "email",
+        "profile"
+    ]
+}

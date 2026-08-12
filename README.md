@@ -44,6 +44,6 @@
 
 Valid (valid.co) is an AI-native advertising agency that grows consumer companies through an end-to-end performance marketing offering: AI-generated performance creative, brand-specific AI-influencers, and managed media buying across Meta, TikTok, Google, Snap, and AppLovin. Based in San Francisco, California.
 
-Valid operates as a managed service with a client platform at clients.valid.co and does not currently publish a public API or developer program.
+Valid operates as a managed service with a client platform at clients.valid.co. It publishes no developer program, documentation site, or OpenAPI — but it does run a live first-party MCP server, the "Chat With Your Ads" server at `https://mcp.valid.co/api/mcp/`, bundled into every managed media-buying engagement so a client can query their whole ad account in plain English. That endpoint is customer-gated: it is protected by an OAuth 2.1 authorization code flow with PKCE and RFC 7591 dynamic client registration, and it anonymously serves the full RFC 9728 / RFC 8414 discovery chain, but an unauthenticated `tools/list` returns HTTP 401, so the tool catalog is not public. Valid publishes no A2A agent card, no SDKs in any package registry, no pricing, no rate limits, no status page, and no changelog.
 
 Backed by: canaan-partners

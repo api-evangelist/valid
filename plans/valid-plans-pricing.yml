@@ -1,0 +1,29 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://valid.co/media-buying and https://valid.co/terms-of-service, plus probes
+  of https://valid.co/pricing (404) and https://valid.co/plans (404), all
+  2026-08-12.
+plan_count: 0
+plans: []
+currency: USD
+billing_model: subscription
+notes: >-
+  Valid publishes NO pricing. There is no /pricing or /plans page (both 404) and no
+  price appears on any product page. The only route to a number is the "Book a Demo"
+  funnel (https://perspectivefunnel.co/...), so every engagement is quoted through
+  sales. The terms of service confirm the commercial shape without ever naming an
+  amount: a free tier "offered at the company's discretion" that can be terminated
+  without notice, paid services whose "payment terms are presented during signup",
+  recurring auto-renewing subscriptions billed through Stripe, all fees
+  non-refundable with no proration on cancellation, and cancellation only by
+  emailing support@valid.co. The media-buying page describes a bundled subscription
+  covering dashboard and AI tooling, senior media buyers, attribution setup and
+  dedicated Slack support — but attaches no price to it.
+api_pricing:
+  published: false
+  note: >-
+    The Chat With Your Ads MCP server is not separately priced or separately
+    purchasable. It is bundled into the managed media-buying engagement ("Every
+    client gets ... an MCP server"), so there is no self-serve path to the API at any
+    price.

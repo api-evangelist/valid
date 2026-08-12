@@ -1,25 +1,33 @@
 aid: valid
 accessModel:
   pricing: unknown
-  onboarding: unknown
+  onboarding: sales
   trial: false
   try_now: false
   public: false
-  label: Unknown
-  confidence: low
-  source: []
-  generated: '2026-07-22'
-  method: derived
+  label: Customer Gated
+  confidence: medium
+  source:
+  - https://valid.co/media-buying
+  - https://mcp.valid.co/.well-known/oauth-protected-resource
+  generated: '2026-08-12'
+  method: probed
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/valid.png
 name: Valid
-description: Valid is an AI-native advertising agency that grows consumer companies
+description: >-
+  Valid is an AI-native advertising agency that grows consumer companies
   through an end-to-end performance marketing offering, combining AI-generated performance
   creative (20+ ads per month, moving from concept to launch in about three days),
   brand-specific AI-influencers with organic followings, and managed media buying
-  across Meta, TikTok, Google, Snap, and AppLovin. Valid is backed by Canaan Partners
-  and based in San Francisco, California. The company operates as a managed service
-  with a client platform at clients.valid.co and does not currently publish a public
-  API or developer program.
+  across Meta, TikTok, Google, Snap, and AppLovin. Every managed client also receives
+  the "Chat With Your Ads" MCP server — a live, first-party Model Context Protocol
+  endpoint at mcp.valid.co that lets an agent query the whole ad account in plain
+  English. That MCP surface is customer-gated rather than public: it is protected by
+  an OAuth 2.1 authorization code flow with PKCE and RFC 7591 dynamic client
+  registration, and it correctly serves the full RFC 9728 / RFC 8414 discovery chain,
+  but Valid publishes no developer portal, no documentation, no OpenAPI, and no tool
+  catalog, so the capability surface is invisible without a client account. Valid is
+  backed by Canaan Partners and based in San Francisco, California.
 url: https://raw.githubusercontent.com/api-evangelist/valid/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -29,7 +37,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-08-12'
 tags:
 - Company
 - Advertising
@@ -38,7 +46,48 @@ tags:
 - Creative
 - Media Buying
 - Influencers
-apis: []
+- MCP
+- Agents
+- Performance Marketing
+apis:
+- name: Valid Chat With Your Ads MCP Server
+  description: A live first-party Model Context Protocol server that lets a Valid
+    managed-service client query their whole advertising account — spend, channels,
+    creative performance, attribution — in plain English from an MCP-capable agent.
+    Speaks JSON-RPC over streamable HTTP and is protected by an OAuth 2.1
+    authorization code flow with PKCE, refresh tokens and dynamic client
+    registration, with the full RFC 9728 protected-resource and RFC 8414
+    authorization-server discovery chain published anonymously. The tool catalog
+    itself is auth-gated; an anonymous tools/list returns 401.
+  humanURL: https://valid.co/media-buying
+  baseURL: https://mcp.valid.co/api/mcp/
+  tags:
+  - mcp
+  - agent-native
+  - advertising
+  - media-buying
+  - performance-marketing
+  - ad-spend
+  - reporting
+  - attribution
+  - oauth2
+  properties:
+  - type: MCPServer
+    url: mcp/valid-mcp.yml
+  - type: Authentication
+    url: authentication/valid-authentication.yml
+  - type: OAuthScopes
+    url: scopes/valid-scopes.yml
+  - type: ErrorCatalog
+    url: errors/valid-problem-types.yml
+  - type: Conventions
+    url: conventions/valid-conventions.yml
+  - type: RateLimits
+    url: rate-limits/valid-rate-limits.yml
+  - type: OAuthAuthorizationServer
+    url: well-known/valid-oauth-authorization-server.json
+  - type: OAuthProtectedResource
+    url: well-known/valid-oauth-protected-resource.json
 common:
 - type: DomainSecurity
   url: security/valid-domain-security.yml
@@ -56,17 +105,25 @@ common:
   url: https://valid.co/privacy-policy
 - type: Contact
   url: mailto:hello@valid.co
+- type: Support
+  url: mailto:support@valid.co
 - type: WellKnown
   url: well-known/valid-well-known.yml
 - type: LLMsTxt
   url: llms/valid-llms.txt
+- type: Conformance
+  url: conformance/valid-conformance.yml
+- type: Lifecycle
+  url: lifecycle/valid-lifecycle.yml
+- type: Plans
+  url: plans/valid-plans-pricing.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 x-enrichment:
-  date: '2026-07-21'
-  status: minimal
-  artifacts_added: 3
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 12
   pass: local-v1
