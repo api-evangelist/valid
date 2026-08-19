@@ -3,30 +3,25 @@ method: probed
 status: published
 source: https://mcp.valid.co/.well-known/oauth-protected-resource
 docs: https://valid.co/media-buying
-provider_claim: >-
-  "Every client gets a real-time dashboard into their own spend, plus an MCP server
-  to query the whole account in plain English." — https://valid.co/media-buying,
-  fetched 2026-08-12.
+provider_claim: '"Every client gets a real-time dashboard into their own spend, plus an MCP server to
+  query the whole account in plain English." — https://valid.co/media-buying, fetched 2026-08-12.'
 server:
   name: Chat With Your Ads MCP Server
-  name_source: >-
-    resource_name in the RFC 9728 protected-resource metadata document served at
-    https://mcp.valid.co/.well-known/oauth-protected-resource (HTTP 200). The name
-    matches Valid's own media-buying page copy verbatim, which is how ownership of
+  name_source: resource_name in the RFC 9728 protected-resource metadata document served at https://mcp.valid.co/.well-known/oauth-protected-resource
+    (HTTP 200). The name matches Valid's own media-buying page copy verbatim, which is how ownership of
     this endpoint is established.
   transport: http
   url: https://mcp.valid.co/api/mcp/
   alt_url: https://v1.valid-gke-data-api.com/api/mcp/
-  runtime: >-
-    uvicorn (FastAPI), fronted by a Google Cloud load balancer (the responses carry
-    a "via: 1.1 google" header and a GCLB cookie).
+  runtime: 'uvicorn (FastAPI), fronted by a Google Cloud load balancer (the responses carry a "via: 1.1
+    google" header and a GCLB cookie).'
   listings: []
-  listings_note: >-
-    No public MCP registry, Claude Connector store, or ChatGPT Apps listing was found
-    for this server. It is offered to Valid's managed-service clients, not to the
-    open developer public.
+  listings_note: No public MCP registry, Claude Connector store, or ChatGPT Apps listing was found for
+    this server. It is offered to Valid's managed-service clients, not to the open developer public.
 auth:
-  methods: [oauth2, apikey]
+  methods:
+  - oauth2
+  - apikey
   gated: true
   oauth2:
     authorization_server: https://mcp.valid.co
@@ -36,27 +31,32 @@ auth:
     token_endpoint: https://mcp.valid.co/oauth/token
     registration_endpoint: https://mcp.valid.co/oauth/register
     dynamic_client_registration: true
-    scopes_supported: [openid, email, profile]
-    grant_types: [authorization_code, refresh_token]
-    response_types: [code]
-    pkce: [S256, plain]
-    bearer_methods_supported: [header]
+    scopes_supported:
+    - openid
+    - email
+    - profile
+    grant_types:
+    - authorization_code
+    - refresh_token
+    response_types:
+    - code
+    pkce:
+    - S256
+    - plain
+    bearer_methods_supported:
+    - header
   apikey:
-    note: >-
-      An outer gate sits in front of everything on the host except /health and the
-      three OAuth/OIDC metadata paths, answering HTTP 407 with
-      {"error":"API key missing"}. The MCP endpoint itself answers HTTP 401
-      {"detail":"Not authenticated"} with WWW-Authenticate: Bearer.
+    note: 'An outer gate sits in front of everything on the host except /health and the three OAuth/OIDC
+      metadata paths, answering HTTP 407 with {"error":"API key missing"}. The MCP endpoint itself answers
+      HTTP 401 {"detail":"Not authenticated"} with WWW-Authenticate: Bearer.'
 tool_count: null
 tools: []
-tools_note: >-
-  NOT RECORDED — the live tool schema is auth-gated and Valid publishes no fallback
-  list. An anonymous JSON-RPC tools/list POST to https://mcp.valid.co/api/mcp/
-  returns HTTP 401 {"detail":"Not authenticated"} with WWW-Authenticate: Bearer, and
-  /llms.txt, /openapi.json, /docs and /redoc on the same host all return HTTP 407
-  behind the API-key gate. No tool names, descriptions or inputSchemas are asserted
-  here. Enumerating them requires an authenticated client-account introspection,
-  which is exactly the kind of credentialed access this profile does not use.
+tools_note: 'NOT RECORDED — the live tool schema is auth-gated and Valid publishes no fallback list. An
+  anonymous JSON-RPC tools/list POST to https://mcp.valid.co/api/mcp/ returns HTTP 401 {"detail":"Not
+  authenticated"} with WWW-Authenticate: Bearer, and /llms.txt, /openapi.json, /docs and /redoc on the
+  same host all return HTTP 407 behind the API-key gate. No tool names, descriptions or inputSchemas are
+  asserted here. Enumerating them requires an authenticated client-account introspection, which is exactly
+  the kind of credentialed access this profile does not use.'
 x-evidence:
   fetched: '2026-08-12'
   probes:
@@ -82,13 +82,19 @@ x-evidence:
     method: GET
     http_status: 200
     note: source of the provider's own MCP claim
-notes: >-
-  This is the finding that changes Valid's profile. The 2026-07-21 round recorded
-  "no public API or developer program" after probing only valid.co. Valid does run a
-  real, live, first-party MCP server — it is simply not advertised on a developer
-  portal, has no documentation site, and is reachable only by its managed-service
-  clients. The API surface is therefore CUSTOMER-GATED, not absent: an agent surface
-  exists, is OAuth 2.1-protected with dynamic client registration and PKCE, and
-  correctly implements both RFC 8414 and RFC 9728 discovery — a better-than-average
-  MCP auth posture — but its capability surface is invisible to anyone without a
-  client account.
+notes: 'This is the finding that changes Valid''s profile. The 2026-07-21 round recorded "no public API
+  or developer program" after probing only valid.co. Valid does run a real, live, first-party MCP server
+  — it is simply not advertised on a developer portal, has no documentation site, and is reachable only
+  by its managed-service clients. The API surface is therefore CUSTOMER-GATED, not absent: an agent surface
+  exists, is OAuth 2.1-protected with dynamic client registration and PKCE, and correctly implements both
+  RFC 8414 and RFC 9728 discovery — a better-than-average MCP auth posture — but its capability surface
+  is invisible to anyone without a client account.'
+deployment:
+  mode: none
+  endpoint: https://mcp.valid.co/.well-known/oauth-protected-resource
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census
