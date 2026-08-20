@@ -62,6 +62,16 @@ apis:
   humanURL: https://valid.co/media-buying
   baseURL: https://mcp.valid.co/api/mcp/
   tags:
+  - MCP
+  - agent-native
+  - Advertising
+  - Media Buying
+  - Performance Marketing
+  - ad-spend
+  - Reporting
+  - Attribution
+  - Authentication
+  tags_raw:
   - mcp
   - agent-native
   - advertising
