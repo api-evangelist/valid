@@ -1,18 +1,14 @@
 generated: '2026-08-12'
 method: probed
 source: live HTTPS probes of every Valid host (2026-08-12)
-notes: >-
-  Round 2 supersedes the 2026-07-21 probe, which only looked at valid.co and
-  concluded Valid published nothing. Valid DOES serve real discovery documents —
-  they live on the MCP host (mcp.valid.co), not the marketing site. Three
-  documents return 200 with real JSON bodies: RFC 8414 OAuth 2.0 Authorization
-  Server Metadata, RFC 9728 OAuth 2.0 Protected Resource Metadata, and an
-  OpenID Connect discovery document (byte-identical to the RFC 8414 document).
-  Everything else on mcp.valid.co sits behind an outer API-key gate that answers
-  HTTP 407 {"error":"API key missing"} — including /.well-known/agent-card.json,
-  so NO A2A agent card is claimed. www.valid.co and clients.valid.co 404 every
-  path; api.valid.co is a Kong gateway that answers 404 "no Route matched with
-  those values" on every path.
+notes: 'Round 2 supersedes the 2026-07-21 probe, which only looked at valid.co and concluded Valid published
+  nothing. Valid DOES serve real discovery documents — they live on the MCP host (mcp.valid.co), not the
+  marketing site. Three documents return 200 with real JSON bodies: RFC 8414 OAuth 2.0 Authorization Server
+  Metadata, RFC 9728 OAuth 2.0 Protected Resource Metadata, and an OpenID Connect discovery document (byte-identical
+  to the RFC 8414 document). Everything else on mcp.valid.co sits behind an outer API-key gate that answers
+  HTTP 407 {"error":"API key missing"} — including /.well-known/agent-card.json, so NO A2A agent card
+  is claimed. www.valid.co and clients.valid.co 404 every path; api.valid.co is a Kong gateway that answers
+  404 "no Route matched with those values" on every path.'
 hosts:
 - host: https://mcp.valid.co
   role: MCP server / OAuth authorization server (CNAME to v1.valid-gke-data-api.com)
@@ -20,22 +16,21 @@ hosts:
   - path: /.well-known/oauth-authorization-server
     status: 200
     content_type: application/json
-    file: well-known/valid-oauth-authorization-server.json
+    file: valid-oauth-authorization-server.json
     real_document: true
   - path: /.well-known/oauth-protected-resource
     status: 200
     content_type: application/json
-    file: well-known/valid-oauth-protected-resource.json
+    file: valid-oauth-protected-resource.json
     real_document: true
   - path: /.well-known/openid-configuration
     status: 200
     content_type: application/json
-    file: well-known/valid-openid-configuration.json
+    file: valid-openid-configuration.json
     real_document: true
-    note: byte-identical to the oauth-authorization-server document; it advertises
-      no userinfo_endpoint, jwks_uri or id_token_signing_alg_values_supported, so
-      it is an RFC 8414 document served at the OIDC path rather than a conformant
-      OIDC discovery document.
+    note: byte-identical to the oauth-authorization-server document; it advertises no userinfo_endpoint,
+      jwks_uri or id_token_signing_alg_values_supported, so it is an RFC 8414 document served at the OIDC
+      path rather than a conformant OIDC discovery document.
   - path: /.well-known/agent-card.json
     status: 407
     real_document: false
@@ -58,8 +53,8 @@ hosts:
   - path: /openapi.json
     status: 407
     real_document: false
-    note: FastAPI/uvicorn service; the interactive docs (/docs, /redoc) and the
-      generated OpenAPI are behind the same API-key gate.
+    note: FastAPI/uvicorn service; the interactive docs (/docs, /redoc) and the generated OpenAPI are
+      behind the same API-key gate.
   - path: /health
     status: 200
     content_type: application/json
@@ -71,8 +66,8 @@ hosts:
   - path: /robots.txt
     status: 200
     real_document: true
-    note: explicitly opens the site to AI model crawlers (GPTBot, ClaudeBot,
-      PerplexityBot, Google-Extended); points at https://valid.co/sitemap.xml.
+    note: explicitly opens the site to AI model crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended);
+      points at https://valid.co/sitemap.xml.
   - path: /.well-known/security.txt
     status: 404
     real_document: false
@@ -112,8 +107,8 @@ hosts:
   - path: /.well-known/security.txt
     status: 404
     real_document: false
-    note: SPA catch-all — every /.well-known/* path returns the same 39,833-byte
-      Next.js HTML shell with a 404 status.
+    note: SPA catch-all — every /.well-known/* path returns the same 39,833-byte Next.js HTML shell with
+      a 404 status.
   - path: /.well-known/oauth-protected-resource
     status: 404
     real_document: false
@@ -132,10 +127,9 @@ hosts:
   - path: /
     status: 404
     real_document: false
-    note: 'Kong answers every path with {"message":"no Route matched with those
-      values","request_id":"..."} and x-kong-response-latency / x-kong-request-id
-      headers. A real, Valid-controlled gateway host (dedicated A record
-      136.111.232.197; valid.co has no wildcard DNS) with zero public routes.'
+    note: Kong answers every path with {"message":"no Route matched with those values","request_id":"..."}
+      and x-kong-response-latency / x-kong-request-id headers. A real, Valid-controlled gateway host (dedicated
+      A record 136.111.232.197; valid.co has no wildcard DNS) with zero public routes.
   - path: /openapi.json
     status: 404
     real_document: false
