@@ -74,7 +74,7 @@ apis:
   baseURL: https://mcp.valid.co/api/mcp/
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - Advertising
   - Media Buying
   - Performance Marketing
