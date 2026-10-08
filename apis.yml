@@ -110,6 +110,8 @@ apis:
   - type: OAuthProtectedResource
     url: well-known/valid-oauth-protected-resource.json
 common:
+- type: RateLimits
+  url: rate-limits/valid-rate-limits.yml
 - type: DomainSecurity
   url: security/valid-domain-security.yml
 - type: Website
